@@ -9,6 +9,8 @@
     --foreground: #ededed;
   }
 }
+theme: {
+}
 
 html {
   height: 100%;
