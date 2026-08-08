@@ -1,50 +1,44 @@
 # ======================
+# Environment variables
+# ======================
+
+.env
+.env.*
+!.env.example
+
+# ======================
 # Frontend (Next.js)
 # ======================
 
-# Dependencies
 frontend/node_modules/
-
-# Next.js build output
 frontend/.next/
 frontend/out/
 
-# Environment variables
 frontend/.env
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
+frontend/.env.*
+!frontend/.env.example
 
-# Logs
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
-
+frontend/pnpm-debug.log*
 
 # ======================
 # Backend (Spring Boot)
 # ======================
 
-# Maven build output
 backend/target/
-
-# Maven wrapper cache
-backend/.mvn/wrapper/maven-wrapper.jar
-
-# Environment files
 backend/.env
+backend/.env.*
+!backend/.env.example
 
-# Logs
 backend/*.log
 
-
 # ======================
-# IDE / OS files
+# IDE / OS
 # ======================
 
 .vscode/
 .idea/
-
 .DS_Store
 *.swp
