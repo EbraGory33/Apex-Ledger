@@ -1,0 +1,51 @@
+Table accounts {
+  id uuid [pk]
+  created_at timestamp
+}
+
+Table wallets {
+  id uuid [pk]
+  account_id uuid [not null]
+  created_at timestamp
+}
+
+Table ledger_accounts {
+  id uuid [pk]
+  wallet_id uuid [not null]
+  created_at timestamp
+}
+
+Table journal_entries {
+  id uuid [pk]
+  created_at timestamp
+}
+
+Table ledger_entries {
+  id uuid [pk]
+  journal_entry_id uuid [not null]
+  ledger_account_id uuid [not null]
+  amount decimal
+  entry_type varchar
+  created_at timestamp
+}
+
+Table transfers {
+  id uuid [pk]
+  source_wallet_id uuid [not null]
+  destination_wallet_id uuid [not null]
+  amount decimal
+  status varchar
+  created_at timestamp
+}
+
+Ref: accounts.id < wallets.account_id
+
+Ref: wallets.id - ledger_accounts.wallet_id
+
+Ref: journal_entries.id < ledger_entries.journal_entry_id
+
+Ref: ledger_accounts.id < ledger_entries.ledger_account_id
+
+Ref: wallets.id < transfers.source_wallet_id
+
+Ref: wallets.id < transfers.destination_wallet_id

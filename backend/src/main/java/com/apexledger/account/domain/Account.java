@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.time.Instant;
 
 public final class Account {
+
     private static final int MAX_DISPLAY_NAME_LENGTH = 120;
 
     private final AccountId id;
@@ -35,6 +36,16 @@ public final class Account {
         }
         Instant now = clock.instant();
         return new Account(AccountId.generate(idGenerator), displayName, AccountStatus.ACTIVE, now, now);
+    }
+
+    public static Account reconstitute(
+            AccountId id,
+            String displayName,
+            AccountStatus status,
+            Instant createdAt,
+            Instant updatedAt
+    ) {
+        return new Account(id, displayName, status, createdAt, updatedAt);
     }
 
     public Account changeStatus(AccountStatus requestedStatus, Clock clock) {
