@@ -1,6 +1,7 @@
 package com.apexledger;
 
 import com.apexledger.account.domain.AccountIdGenerator;
+import com.apexledger.wallet.domain.WalletIdGenerator;
 import java.time.Clock;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ public class BackendConfiguration {
 
     @Bean
     AccountIdGenerator accountIdGenerator() {
+        return UUID::randomUUID;
+    }
+
+    @Bean
+    WalletIdGenerator walletIdGenerator() {
         return UUID::randomUUID;
     }
 }

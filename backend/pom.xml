@@ -149,13 +149,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- H2: lightweight in-memory database for tests -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
         
         <!-- Testcontainers JUnit integration: manages container lifecycle for JUnit tests -->
         <dependency>
