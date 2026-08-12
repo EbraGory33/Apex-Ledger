@@ -1,5 +1,6 @@
 package com.apexledger.ledger.adapter.out.persistence;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -28,14 +29,14 @@ public class LedgerEntryEntity {
     @Column(name = "direction", nullable = false)
     private EntryDirection direction;
     @Column(name = "amount_atomic", nullable = false)
-    private long amountAtomic;
+    private BigInteger amountAtomic;
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     protected LedgerEntryEntity() {
     }
 
-    LedgerEntryEntity(UUID id, UUID journalId, UUID accountId, EntryDirection direction, long amount, Instant createdAt) {
+    LedgerEntryEntity(UUID id, UUID journalId, UUID accountId, EntryDirection direction, BigInteger amount, Instant createdAt) {
         this.id = id;
         this.journalEntryId = journalId;
         this.ledgerAccountId = accountId;
@@ -56,7 +57,7 @@ public class LedgerEntryEntity {
         return direction;
     }
 
-    long getAmountAtomic() {
+    BigInteger getAmountAtomic() {
         return amountAtomic;
     }
 

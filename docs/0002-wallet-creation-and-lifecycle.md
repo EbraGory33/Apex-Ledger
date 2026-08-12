@@ -104,7 +104,7 @@ com.apexledger.wallet
 
 The wallet application layer may query the account module through a published account-facing contract to determine whether an owner is active. It must not use account persistence entities or reach into account adapters.
 
-The Ledger feature may later associate a `LedgerAccount` with a wallet through an explicit ledger-owned reference. Wallet must not depend on a ledger implementation merely to be created.
+The Ledger feature associates ledger accounts with a wallet through an explicit ledger-owned reference. Once F-003 is hardened, wallet-creation orchestration must provision the initial APX ledger account in the same transaction. The wallet domain remains independent of ledger implementation types; coordination occurs through a published ledger application contract.
 
 ## 6. API contract
 
@@ -232,6 +232,8 @@ CREATE INDEX wallets_account_id_idx ON wallets (account_id);
 
 The database enforces referential integrity and duplicate-label protection. The application still checks those conditions to return intentional domain errors; the persistence adapter must translate a race-condition constraint violation to `DuplicateWalletLabelException`.
 
+This is the F-002 APX-only schema. The F-003 hardening removes `wallets.asset_code` as accounting identity moves to `ledger_accounts.asset_code`; a wallet can then own one ledger account per supported asset. API compatibility may continue to report APX while it is the only enabled asset.
+
 ## 9. Implementation notes
 
 1. Keep validation and state transitions in the framework-free `Wallet` domain type.
@@ -260,10 +262,9 @@ The database enforces referential integrity and duplicate-label protection. The 
 2. **Persistence:** Flyway migration, entity/mapper, PostgreSQL repository, and integration tests.
 3. **Application:** create/get/list/status services, account-status lookup port, and domain error mapping.
 4. **HTTP:** controller, DTOs, validation, shared error mapping, and endpoint tests.
-5. **Ledger follow-up:** introduce ledger accounts and derive wallet balances from balanced journal entries.
+5. **Ledger follow-up:** atomically provision the initial APX ledger account for each new wallet, backfill existing wallets, and derive wallet balances from balanced journal entries.
 
 ## 12. Open questions
 
 - Should wallet labels be user-visible names only, or should a non-editable public wallet address be introduced separately before external transfers?
 - Should freezing be available to the account owner, administrators, or both once authorization exists?
-- When Ledger is introduced, should every existing wallet receive a ledger account through a backfill migration or lazily on first financial operation?

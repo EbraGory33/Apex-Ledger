@@ -1,0 +1,280 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "accounts",
+        "schemaName": "public",
+        "x": 12,
+        "y": 12
+      },
+      {
+        "name": "wallets",
+        "schemaName": "public",
+        "x": 430.8828569101593,
+        "y": -20
+      },
+      {
+        "name": "assets",
+        "schemaName": "public",
+        "x": 12,
+        "y": 250
+      },
+      {
+        "name": "ledger_accounts",
+        "schemaName": "public",
+        "x": 1128.4916714816093,
+        "y": -316.2096931703629
+      },
+      {
+        "name": "journal_entries",
+        "schemaName": "public",
+        "x": 12,
+        "y": 444
+      },
+      {
+        "name": "ledger_entries",
+        "schemaName": "public",
+        "x": 1742.7140625,
+        "y": 12
+      },
+      {
+        "name": "apx_issuances",
+        "schemaName": "public",
+        "x": 1587.985241920117,
+        "y": 304.41432050919536
+      },
+      {
+        "name": "transfers",
+        "schemaName": "public",
+        "x": 1120.4865570140391,
+        "y": 615.9386263891622
+      },
+      {
+        "name": "wallets32",
+        "schemaName": "public",
+        "x": 420.6078465922411,
+        "y": 278.14984926866896
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "accounts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "account_id"
+        ],
+        "secondTableName": "wallets",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "wallets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "wallet_id"
+        ],
+        "secondTableName": "ledger_accounts",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "code"
+        ],
+        "firstTableName": "assets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "asset_code"
+        ],
+        "secondTableName": "ledger_accounts",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "journal_entry_id"
+        ],
+        "secondTableName": "ledger_entries",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "ledger_accounts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "ledger_account_id"
+        ],
+        "secondTableName": "ledger_entries",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "reversal_of_id"
+        ],
+        "secondTableName": "journal_entries",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "wallets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "destination_wallet_id"
+        ],
+        "secondTableName": "apx_issuances",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "journal_entry_id"
+        ],
+        "secondTableName": "apx_issuances",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "reversal_journal_entry_id"
+        ],
+        "secondTableName": "apx_issuances",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "wallets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "source_wallet_id"
+        ],
+        "secondTableName": "transfers",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "wallets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "destination_wallet_id"
+        ],
+        "secondTableName": "transfers",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "code"
+        ],
+        "firstTableName": "assets",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "asset_code"
+        ],
+        "secondTableName": "transfers",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "journal_entry_id"
+        ],
+        "secondTableName": "transfers",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "journal_entries",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "reversal_journal_entry_id"
+        ],
+        "secondTableName": "transfers",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}

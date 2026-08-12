@@ -41,14 +41,14 @@ create request --> PENDING --> POSTED --> REVERSED
 
 ## 4. System accounts
 
-F-003 provisions a special, non-wallet-owned `APX_ISSUANCE` ledger account during migration/bootstrap. A posted issuance creates:
+F-003 provisions a special `SYSTEM` ledger account for `APX_ISSUANCE` during migration/bootstrap. It has `walletId = NULL` and `assetCode = APX`; the database's ledger-account ownership constraint explicitly permits this shape. The destination uses the wallet's APX ledger account. A posted issuance creates:
 
 | Ledger account | Direction | Amount |
 | --- | --- | --- |
 | `APX_ISSUANCE` | Debit | requested atomic amount |
 | Recipient wallet's ledger account | Credit | requested atomic amount |
 
-The entry remains balanced while the credit-side wallet gains usable APX. Circulating supply is derived as the aggregate credit balance of wallet-owned ledger accounts, not stored as a mutable counter.
+Both lines resolve to APX ledger accounts, so the entry balances for APX while the credit-side wallet gains usable APX. Circulating supply is derived as the aggregate credit balance of APX wallet-owned ledger accounts, not stored as a mutable counter. Future fiat issuance uses a distinct system account for that asset; issuance never balances one asset against another.
 
 ## 5. API contract
 

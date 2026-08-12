@@ -1,51 +1,126 @@
+// Target schema after the documented F-003 hardening. Issuance and transfer
+// tables are included as proposed F-004/F-005 structures.
+
 Table accounts {
   id uuid [pk]
-  created_at timestamp
+  display_name varchar(120) [not null]
+  status varchar(20) [not null, note: 'ACTIVE, SUSPENDED, or CLOSED']
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
 }
 
 Table wallets {
   id uuid [pk]
   account_id uuid [not null]
-  created_at timestamp
+  label varchar(80) [not null]
+  asset_code VARCHAR(10) [not null note:'REFERENCES assets(code)']
+  status varchar(20) [not null, note: 'ACTIVE or FROZEN']
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  Indexes {
+    account_id
+    (account_id, label) [unique, note: 'Implemented using normalized lower(trim(label))']
+  }
+   Note: 'Wallets are asset-agnostic. Asset balances are represented by ledger_accounts and derived from posted ledger entries.'
+}
+
+
+Table assets {
+  code varchar(10) [pk, note: '3-10 uppercase ASCII letters']
+  name varchar(100) [not null]
+  decimal_places smallint [not null, note: '0 through 18']
 }
 
 Table ledger_accounts {
   id uuid [pk]
-  wallet_id uuid [not null]
-  created_at timestamp
+  account_type varchar(20) [not null, note: 'WALLET or SYSTEM']
+  wallet_id uuid [note: 'Required only for WALLET accounts']
+  system_account_code varchar(60) [note: 'Required only for SYSTEM accounts']
+  asset_code varchar(10) [not null]
+  created_at timestamptz [not null]
+
+  Indexes {
+    (wallet_id, asset_code) [unique]
+    (system_account_code, asset_code) [unique]
+  }
+
+  Note: 'Exactly one of wallet_id and system_account_code is populated, according to account_type.'
 }
 
 Table journal_entries {
   id uuid [pk]
-  created_at timestamp
+  reference_type varchar(40) [not null]
+  reference_id varchar(100)
+  status varchar(20) [not null, note: 'DRAFT, POSTED, or REVERSED']
+  created_at timestamptz [not null]
+  posted_at timestamptz
+  reversal_of_id uuid [unique]
 }
 
 Table ledger_entries {
   id uuid [pk]
   journal_entry_id uuid [not null]
   ledger_account_id uuid [not null]
-  amount decimal
-  entry_type varchar
-  created_at timestamp
+  direction varchar(10) [not null, note: 'DEBIT or CREDIT']
+  amount_atomic bigint [not null, note: 'Must be greater than zero']
+  created_at timestamptz [not null]
+
+  Indexes {
+    journal_entry_id
+    ledger_account_id
+  }
+}
+
+Table apx_issuances {
+  id uuid [pk]
+  destination_wallet_id uuid [not null]
+  amount_atomic bigint [not null, note: 'Must be greater than zero']
+  idempotency_key varchar(100) [not null, unique]
+  reason varchar(255)
+  status varchar(20) [not null]
+  journal_entry_id uuid [unique]
+  reversal_journal_entry_id uuid [unique]
+  created_at timestamptz [not null]
+  posted_at timestamptz
+  reversed_at timestamptz
 }
 
 Table transfers {
   id uuid [pk]
   source_wallet_id uuid [not null]
   destination_wallet_id uuid [not null]
-  amount decimal
-  status varchar
-  created_at timestamp
+  asset_code varchar(10) [not null, note: 'Initially APX; both ledger accounts use this asset']
+  amount_atomic bigint [not null, note: 'Must be greater than zero']
+  idempotency_key varchar(100) [not null, unique]
+  status varchar(20) [not null]
+  rejection_reason varchar(255)
+  journal_entry_id uuid [unique]
+  reversal_journal_entry_id uuid [unique]
+  created_at timestamptz [not null]
+  posted_at timestamptz
+  reversed_at timestamptz
+
+  Indexes {
+    source_wallet_id
+    destination_wallet_id
+    created_at
+  }
+
+  Note: 'source_wallet_id must differ from destination_wallet_id.'
 }
 
 Ref: accounts.id < wallets.account_id
-
-Ref: wallets.id - ledger_accounts.wallet_id
-
+Ref: wallets.id < ledger_accounts.wallet_id
+Ref: assets.code < ledger_accounts.asset_code
 Ref: journal_entries.id < ledger_entries.journal_entry_id
-
 Ref: ledger_accounts.id < ledger_entries.ledger_account_id
-
+Ref: journal_entries.id < journal_entries.reversal_of_id
+Ref: wallets.id < apx_issuances.destination_wallet_id
+Ref: journal_entries.id - apx_issuances.journal_entry_id
+Ref: journal_entries.id - apx_issuances.reversal_journal_entry_id
 Ref: wallets.id < transfers.source_wallet_id
-
 Ref: wallets.id < transfers.destination_wallet_id
+Ref: assets.code < transfers.asset_code
+Ref: journal_entries.id - transfers.journal_entry_id
+Ref: journal_entries.id - transfers.reversal_journal_entry_id

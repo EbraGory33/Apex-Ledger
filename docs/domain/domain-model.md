@@ -3,7 +3,9 @@ classDiagram
 
     Account "1" --> "0..*" Wallet : owns
 
-    Wallet "1" --> "1" LedgerAccount : maps to
+    Asset "1" --> "0..*" LedgerAccount : denominates
+
+    Wallet "0..1" --> "0..*" LedgerAccount : owns WALLET accounts
 
     LedgerAccount "1" --> "0..*" LedgerEntry : contains
 
@@ -17,11 +19,20 @@ classDiagram
     }
 
     class Wallet {
-        product-facing asset container
+        product-facing container
+    }
+
+    class Asset {
+        code
+        name
+        decimalPlaces
     }
 
     class LedgerAccount {
         accounting bucket
+        accountType WALLET or SYSTEM
+        walletId optional
+        assetCode
     }
 
     class JournalEntry {

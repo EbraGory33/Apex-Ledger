@@ -3,7 +3,7 @@ flowchart TD
 
     A[Transfer Requested]
 
-    A --> B[Validate Source Wallet]
+    A --> B[Validate Source Wallet and Asset]
     B --> C[Validate Destination Wallet]
     C --> D[Validate Available Balance]
 
@@ -11,13 +11,13 @@ flowchart TD
 
     E --> F[Create JournalEntry]
 
-    F --> G[Debit Source LedgerAccount]
-    F --> H[Credit Destination LedgerAccount]
+    F --> G[Debit Source LedgerAccount for Asset]
+    F --> H[Credit Destination LedgerAccount for Same Asset]
 
     G --> I[LedgerEntries]
     H --> I
 
-    I --> J[Balanced JournalEntry]
+    I --> J[JournalEntry Balanced Per Asset]
 
     J --> K[LedgerAccount Balances]
 
